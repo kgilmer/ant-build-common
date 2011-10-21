@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!-- Common ant tasks.  This file is under public domain -->
+<project name="build-common" default="jar">		
+	<property name="product.dir" location="${basedir}" />
+	<property name="report.dir" location="${product.dir}/junits" />
+	<property name="javadoc.dir" location="${product.dir}/javadoc" />
+	<property name="dist.dir" location="${product.dir}/dist"/>
+	<property name="dependencies.dir" location="${product.dir}/deps" />
+	
+	<property name="class.dir" location="${basedir}/classes"/>
+	<property name="source.dir" location="${basedir}/src"/>
+	<property name="javadoc.packages" value="*" />
+	
+	<property name="source.version" value="1.6"/>
+	<property name="target.version" value="1.6"/>	
+	
+	<property name="wget.bin" location="/usr/bin/wget" />
+
+	<tstamp>
+		<format property="TS_NOW" pattern="yyyy-MM-dd HH:mm:ss" />
+	</tstamp>
+
+	<target name="clean" description="remove intermediate files">
+		<delete dir="${class.dir}" />
+		<delete dir="${report.dir}" />
+		<delete dir="${javadoc.dir}" />
+	</target>
+
+	<target name="clobber" depends="clean" description="remove all artifact files">
+		<delete file="${dist.dir}/${ant.project.name}.jar" />
+		<delete dir="${dependencies.dir}" />
+	</target>
+
+	<target name="fetch.deps" depends="clean" description="download dependencies">	
+	</target>
+
+	<target name="compile" depends="clean, fetch.deps" description="compile the Java source code to class files">
+		<mkdir dir="${class.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<javac srcdir="${source.dir}" destdir="${class.dir}" source="${source.version}" target="${target.version}" encoding="utf-8" fork="true" includeantruntime="false">
+			<classpath>
+			      <fileset dir="${dependencies.dir}">
+			        <include name="**/*.jar"/>
+			      </fileset>
+				 <fileset dir="${dist.dir}">
+			        <include name="**/*.jar"/>
+			      </fileset>
+			</classpath>
+			<include name="**/*.java" />
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile" description="create a Jar file for the application">
+		<mkdir dir="${dist.dir}" />
+		<copy file="META-INF/MANIFEST.MF" todir="${class.dir}"/>
+		<manifest file="${class.dir}/MANIFEST.MF" mode="update">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Built-Date" value="${TS_NOW}" />
+		</manifest>
+		<jar destfile="${dist.dir}/${ant.project.name}.jar" manifest="${class.dir}/MANIFEST.MF">
+			<fileset dir="${class.dir}" includes="**/*.class" />			
+		</jar>
+	</target>
+
+	<target name="javadoc">
+		<javadoc sourcepath="${source.dir}" packagenames="${javadoc.packages}" defaultexcludes="yes" destdir="${javadoc.dir}" author="false" version="true" use="true" windowtitle="${project.description}">
+		</javadoc>
+	</target>
+</project>
