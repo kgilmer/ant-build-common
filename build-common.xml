@@ -71,6 +71,6 @@
 		<echo message="build-common for Ant.  Usage:"/>
 		<echo message="Set 'deps' to directory containing dependencies."/>
 		<echo message="Set 'dist' to directory for target artifacts."/>
-		<echo message="Example: ant -f dir/build.xml -Ddeps=/tmp/deps -Ddist=./dist"/>
+		<echo message="Example: ant -f dir/build.xml -Ddeps=/tmp/deps -Ddist=./dist jar"/>
 	</target>
 </project>
