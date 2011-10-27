@@ -4,8 +4,8 @@
 	<property name="product.dir" location="${basedir}" />
 	<property name="report.dir" location="${product.dir}/junits" />
 	<property name="javadoc.dir" location="${product.dir}/javadoc" />
-	<property name="dist.dir" location="${product.dir}/dist"/>
-	<property name="dependencies.dir" location="${product.dir}/deps" />
+	<property name="dist" location="${product.dir}/dist"/>
+	<property name="deps" location="${product.dir}/deps" />
 	
 	<property name="class.dir" location="${basedir}/classes"/>
 	<property name="source.dir" location="${basedir}/src"/>
@@ -29,8 +29,8 @@
 	</target>
 
 	<target name="clobber" depends="clean" description="remove all artifact files">
-		<delete file="${dist.dir}/${ant.project.name}.jar" />
-		<delete dir="${dependencies.dir}" />
+		<delete file="${dist}/${ant.project.name}.jar" />
+		<delete dir="${deps}" />
 	</target>
 
 	<target name="fetch.deps" depends="clean" description="download dependencies">	
@@ -41,10 +41,10 @@
 		<mkdir dir="${dist.dir}" />
 		<javac srcdir="${source.dir}" destdir="${class.dir}" source="${source.version}" target="${target.version}" encoding="utf-8" fork="true" includeantruntime="false" debug="${debug}" debuglevel="${debug.level}">
 			<classpath>
-			      <fileset dir="${dependencies.dir}">
+			      <fileset dir="${deps}">
 			        <include name="**/*.jar"/>
 			      </fileset>
-				 <fileset dir="${dist.dir}">
+				 <fileset dir="${dist}">
 			        <include name="**/*.jar"/>
 			      </fileset>
 			</classpath>
@@ -53,13 +53,13 @@
 	</target>
 
 	<target name="jar" depends="compile" description="create a Jar file for the application">
-		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${dist}" />
 		<copy file="META-INF/MANIFEST.MF" todir="${class.dir}"/>
 		<manifest file="${class.dir}/MANIFEST.MF" mode="update">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Built-Date" value="${TS_NOW}" />
 		</manifest>
-		<jar destfile="${dist.dir}/${ant.project.name}.jar" manifest="${class.dir}/MANIFEST.MF">
+		<jar destfile="${dist}/${ant.project.name}.jar" manifest="${class.dir}/MANIFEST.MF">
 			<fileset dir="${class.dir}" includes="**/*.class" />			
 		</jar>
 	</target>
@@ -67,5 +67,12 @@
 	<target name="javadoc">
 		<javadoc sourcepath="${source.dir}" packagenames="${javadoc.packages}" defaultexcludes="yes" destdir="${javadoc.dir}" author="false" version="true" use="true" windowtitle="${project.description}">
 		</javadoc>
+	</target>
+	
+	<target name="help">
+		<echo message="build-common for Ant.  Usage:"/>
+		<echo message="Set 'deps' to directory containing dependencies."/>
+		<echo message="Set 'dist' to directory for target artifacts."/>
+		<echo message="Example: ant -f dir/build.xml -Ddeps=/tmp/deps -Ddist=./dist jar"/>
 	</target>
 </project>
