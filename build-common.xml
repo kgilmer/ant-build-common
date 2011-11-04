@@ -30,7 +30,7 @@
 
 	<target name="clobber" depends="clean" description="remove all artifact files">		
 		<delete file="${dist}/${ant.project.name}.jar" />
-		<delete includeemptydirs="true">
+		<delete includeemptydirs="true" quiet="true">
   			<fileset dir="${dist}" excludes="**/*" />
 		</delete>
 		<delete dir="${deps}" />
