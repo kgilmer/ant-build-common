@@ -7,6 +7,10 @@
 	<property name="dist" location="${product.dir}/dist"/>
 	<property name="deps" location="${product.dir}/deps" />
 	
+	<!-- Legacy property names -->
+	<property name="dist.dir" location="${dist}"/>
+	<property name="dependencies.dir" location="${deps}" />
+	
 	<property name="class.dir" location="${basedir}/classes"/>
 	<property name="source.dir" location="${basedir}/src"/>
 	<property name="javadoc.packages" value="*" />
