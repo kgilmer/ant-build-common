@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ant-build-common</name>
+	<name>org.touge.ant-build-common</name>
 	<comment></comment>
 	<projects>
 	</projects>
