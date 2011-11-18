@@ -40,12 +40,12 @@
 		<delete dir="${deps}" />
 	</target>
 
-	<target name="fetch.deps" depends="clean" description="download dependencies">	
+	<target name="fetch.deps" description="download dependencies">	
 		<!-- Calling script should implement this task to satisfy project binary dependencies. 
 			 The 'deps' variable defines where bin deps should be stored.-->
 	</target>
 
-	<target name="compile" depends="clean, fetch.deps" description="compile the Java source code to class files">
+	<target name="compile" depends="fetch.deps" description="compile the Java source code to class files">
 		<mkdir dir="${class.dir}" />
 		<mkdir dir="${dist}" />
 		<javac srcdir="${source.dir}" destdir="${class.dir}" source="${source.version}" target="${target.version}" encoding="utf-8" fork="true" includeantruntime="false" debug="${debug}" debuglevel="${debug.level}">
